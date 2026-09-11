@@ -14,7 +14,8 @@ from molforge_linux.help_text import ALIASES, catalog, subcommands
 def render():
     lines = ['# Command reference / 指令大全', '',
              '[Home](../README.md) · [User manual / 用户手册](MANUAL.md)', '',
-             'English and Chinese help share the same commands, arguments and scientific defaults.', '',
+             'Find a command below, copy its example, and consult the option table for requirements and defaults.', '',
+             '[English](#english) · [中文](#中文) · [Installer options](MANUAL.md#automatic-environment-setup)', '',
              '```bash', 'molforge --lang en --help', 'molforge conf --help --lang zh',
              'molforge help --all --lang en', 'export MOLFORGE_LANG=zh', '```', '',
              'An explicit `--lang` overrides `MOLFORGE_LANG`; the default language is English. '
@@ -22,7 +23,7 @@ def render():
              '显式 `--lang` 优先于环境变量，默认语言为英文。简称为固定别名，不支持任意前缀。', '',
              '| Command / 命令 | Alias / 简称 | English | 中文 |', '|---|---|---|---|']
     for name in catalog('en'):
-        lines.append(f'| `{name}` | `{ALIASES[name]}` | {catalog("en")[name][0]} | {catalog("zh")[name][0]} |')
+        lines.append(f'| [{name}](#{name}-{ALIASES[name]}) | `{ALIASES[name]}` | {catalog("en")[name][0]} | {catalog("zh")[name][0]} |')
     for lang in ('en', 'zh'):
         lines += ['', '## English' if lang == 'en' else '## 中文', '']
         # Generated defaults must not embed a developer's local results directory.
@@ -30,7 +31,7 @@ def render():
             children = subcommands(parser(lang))
         for name, child in children.items():
             title, detail, examples = catalog(lang)[name]
-            lines += [f'### {name} ({ALIASES[name]})', '', f'{title}. {detail}', '',
+            lines += [f'### {name} ({ALIASES[name]})', '', f'{title}. {detail}', '', '```bash', examples, '```', '',
                       '| Option / 参数 | Requirement / 要求 | Description / 说明 |', '|---|---|---|']
             grouped = {a.dest for g in child._mutually_exclusive_groups if g.required for a in g._group_actions}
             for action in child._actions:
@@ -40,7 +41,7 @@ def render():
                 if action.choices:
                     description += '; ' + ', '.join(f'`{c}`' for c in action.choices)
                 lines.append(f'| `{label}` | {requirement} | {description.replace("|", "/")} |')
-            lines += ['', '```bash', examples, '```', '']
+            lines += ['']
     return '\n'.join(lines)
 
 

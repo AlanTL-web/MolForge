@@ -2,26 +2,40 @@
 
 [Home / 首页](../README.md) · [Complete command reference / 指令大全](COMMANDS.md) · [Citations / 引用](CITATIONS.md)
 
-This manual combines installation, everyday commands, result navigation, batch jobs,
-Slurm, troubleshooting and validation notes. The command reference contains every
-option in both English and Chinese.
+Install the tools needed for your calculation, run a workflow, and inspect its saved results. For short examples, see the [README](../README.md#usage); for every option and default, see the [command reference](COMMANDS.md).
+
+[Install](#install) · [Help](#help-language-and-short-commands) · [Conformers](#first-conformer-calculation) · [Results](#find-inspect-and-enter-results) · [Docking](#select-repair-and-dock) · [MD](#md-and-trajectory-conversion) · [Batch / Slurm](#batch-and-slurm) · [Troubleshooting](#troubleshooting-and-files-to-keep) · [中文](#中文快速操作)
 
 ## Install
 
 ### Automatic environment setup
 
-After cloning and entering this repository, run:
+Clone the repository, choose a profile below, and preview the installation:
 
 ```bash
-bash scripts/install.sh --help
-bash scripts/install.sh --profile all --plan
-bash scripts/install.sh --profile all --yes
+git clone https://github.com/AlanTL-web/MolForge.git
+cd MolForge
+bash scripts/install.sh --profile conformers --plan
+bash scripts/install.sh --profile conformers --yes
 ```
 
-Profiles: `conformers` installs RDKit; `dock` adds Meeko, gemmi, AutoGrid and an
-official AutoDock-GPU v1.6 binary; `repair` installs PDBFixer/OpenMM; `md` installs
-GROMACS, AmberTools, ACPYPE, gmx_MMPBSA, Open Babel, MPI, Uni-GBSA and lickit.
-`all` combines these and checks for separately installed HDOCKlite.
+| Profile | Installed software | Purpose |
+|---|---|---|
+| `conformers` | RDKit | Conformer generation and selection |
+| `dock` | RDKit, Meeko, gemmi, AutoGrid, official AutoDock-GPU v1.6 binary | Ligand docking |
+| `repair` | PDBFixer, OpenMM | Missing-atom repair |
+| `md` | GROMACS, AmberTools, ACPYPE, gmx_MMPBSA, Open Babel, MPI, Uni-GBSA, lickit | MD and energy analysis |
+| `all` | All of the above; checks separately installed HDOCKlite | Full workflow |
+
+| Installer option | Meaning |
+|---|---|
+| `--profile NAME` | Choose a profile; default `conformers` |
+| `--prefix PATH` | Select the environment directory |
+| `--plan` | Show planned setup without installing |
+| `--check` | Check dependencies without installing |
+| `--yes` | Install without an interactive confirmation |
+| `--adgpu auto\|cuda11\|cuda12\|ocl\|skip` | Choose AutoDock-GPU backend or skip its download |
+| `--help` | Show installer usage |
 
 Use `--prefix /path/to/conda/environment` to reuse an existing environment. Otherwise,
 the active Conda environment is selected, or `.molforge/envs/PROFILE` is created.
@@ -218,8 +232,21 @@ molforge f latest --pattern '*.pdb'
 Replace all example file paths and center coordinates with your inputs. Center and
 size are in Angstrom; box dimensions must be >0 and <=95. You may replace `--center`
 with `--site-residues 'A:195,A:203-206'`. Only one center method is allowed.
-`--rigid-macrocycle` fixes the ring scaffold. `--auto-reduce-torsions` additionally
-reduces side-chain torsions and requires that flag; both are off unless requested.
+To hold the input macrocycle conformation fixed and cap active side-chain torsions:
+
+```bash
+molforge dock --receptor ./receptor.pdb --ligand ./selected_ligand.sdf \
+  --center 10 20 30 --size 22.5 22.5 22.5 \
+  --rigid-macrocycle --auto-reduce-torsions --max-ligand-torsions 48
+```
+
+| Option | Effect | Default |
+|---|---|---|
+| `--rigid-macrocycle` | Fix the ring scaffold during docking | Off |
+| `--auto-reduce-torsions` | Freeze side-chain bonds progressively from rings outward; requires rigid macrocycles | Off |
+| `--max-ligand-torsions` | Target torsion ceiling, 1–57; used with automatic reduction | 48 |
+
+Reduction stops when the ceiling is reached and fails if the available rules cannot reach it. It reduces the number of rotatable bonds during docking, not torsional energy. These options run during docking preparation; there is no separate preparation-only command.
 
 Local HDOCK accepts suitable macromolecular PDB inputs:
 
@@ -306,7 +333,7 @@ long docking steps. `logs` prints a snapshot; use `tail -f` on the real path to 
 
 ## 中文快速操作
 
-本手册已合并安装、运行、结果管理、批处理和故障排查。所有参数的中文解释见
+安装依赖、运行计算并查看结果。所有参数的中文解释见
 [指令大全的中文部分](COMMANDS.md#中文)。
 
 ```bash
@@ -351,4 +378,4 @@ cd "$(molforge p latest)"
 均保存在同一份[双语指令大全](COMMANDS.md)。
 
 发表使用本流程所得结果时，请按[引用指南](CITATIONS.md)记录实际软件版本，并引用此次
-运行真正使用的科学软件。MolForge 不会自动安装或打包外部对接与分子动力学引擎。
+运行真正使用的科学软件。安装脚本可按 profile 安装对接与分子动力学依赖；HDOCK 和 GPU 驱动需单独配置。源码包不包含这些外部引擎。

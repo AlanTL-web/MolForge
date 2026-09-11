@@ -2,6 +2,17 @@
 
 [Home](../README.md) · [User manual](MANUAL.md) · [Command reference](COMMANDS.md)
 
+## What to cite
+
+| Calculation | References to include when used |
+|---|---|
+| All workflows | MolForge software record and installed version |
+| Conformers / selection | RDKit; Open Babel if used |
+| AutoDock docking | Meeko, gemmi, AutoDock-GPU, AutoGrid / AutoDock4 |
+| Receptor repair | PDBFixer, OpenMM |
+| MD / MM/GBSA | Uni-GBSA, GROMACS, AmberTools; ACPYPE and gmx_MMPBSA when used |
+| Macromolecular docking | HDOCK |
+
 MolForge coordinates independent scientific programs; it does not bundle their code,
 binaries, force fields, or model data. Cite every program that actually contributed to
 the reported result. GitHub's **Cite this repository** control reads

@@ -3,6 +3,8 @@
 Read [the user manual](docs/MANUAL.md) for the public workflow and
 [the command reference](docs/COMMANDS.md) for supported options.
 
+## Set up and validate
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
@@ -16,8 +18,9 @@ python scripts/package_release.py
 
 Use an isolated Linux environment. The tests exercise actual RDKit conformer
 generation, command parsing, result browsing, and mocked external-engine contracts.
-They do not run a full GPU docking or MD calculation. CI has been configured for
-Linux; its hosted status becomes available after the repository is uploaded.
+They do not run a full GPU docking or MD calculation. The [GitHub Actions page](https://github.com/AlanTL-web/MolForge/actions) lists CI runs.
+
+## Change requirements
 
 Keep scientific defaults explicit. Do not accept unconverged conformers as successful
 outputs or infer GPU utilization from preflight alone. Record the installed software
@@ -32,13 +35,16 @@ public docs, tests, shell examples, and CI files. It excludes virtual environmen
 test results, private ligands, logs, build directories, and the one-time upstream
 extraction script. Local scientific results remain on disk and are ignored by Git.
 
-## Upload preparation
+## Submit a change
 
-The local Git repository has no configured remote and no automatically created commit.
-Review `git status --short` and `git diff --cached` before committing. Create your
-GitHub repository, then add its real URL as the remote and push when ready. No remote
-repository has been created or uploaded by this preparation.
+Fork [MolForge](https://github.com/AlanTL-web/MolForge), create a branch, and submit a pull request describing the behavior changed and the checks you ran. Review `git status --short` and your diff before committing; include synthetic inputs when a reproducible example is needed.
 
-See [NOTICE.md](NOTICE.md) for source provenance and dependency license information.
-The repository's MIT LICENSE applies to MolForge Linux source owned by the project
-author.
+## Build a source release
+
+```bash
+python scripts/package_release.py
+```
+
+The release uses an allowlist to exclude local environments and research results. Review the archive contents before publishing.
+
+See [NOTICE.md](NOTICE.md) for source provenance and dependency licenses. The repository's MIT license applies to MolForge-owned source.

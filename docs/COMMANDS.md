@@ -2,7 +2,9 @@
 
 [Home](../README.md) · [User manual / 用户手册](MANUAL.md)
 
-English and Chinese help share the same commands, arguments and scientific defaults.
+Find a command below, copy its example, and consult the option table for requirements and defaults.
+
+[English](#english) · [中文](#中文) · [Installer options](MANUAL.md#automatic-environment-setup)
 
 ```bash
 molforge --lang en --help
@@ -17,27 +19,33 @@ An explicit `--lang` overrides `MOLFORGE_LANG`; the default language is English.
 
 | Command / 命令 | Alias / 简称 | English | 中文 |
 |---|---|---|---|
-| `help` | `h` | Browse command help | 查看帮助与指令大全 |
-| `doctor` | `dr` | Check the active environment | 检查运行环境 |
-| `status` | `st` | Inspect a result | 查看任务状态和结果位置 |
-| `run` | `batch` | Run a batch configuration | 按配置文件批量运行 |
-| `conformers` | `conf` | Generate and rank 3D conformers | 从 SMILES 生成三维构象 |
-| `select` | `sel` | Select one SDF record | 从 SDF 中选取一个构象或姿势 |
-| `repair` | `rep` | Repair missing receptor atoms | 修复受体缺失原子 |
-| `dock` | `d` | Run AutoDock-GPU docking | 运行 AutoDock-GPU 对接 |
-| `md` | `sim` | Run MD and GBSA analysis | 运行分子动力学与 GBSA 分析 |
-| `convert` | `conv` | Convert a trajectory to PDB | 将轨迹转换为多模型 PDB |
-| `hdock` | `hd` | Run local HDOCK docking | 运行本地 HDOCK 对接 |
-| `runs` | `ls` | List saved jobs | 浏览已保存任务 |
-| `path` | `p` | Print a job or artifact path | 获取任务或结果路径 |
-| `files` | `f` | List output files | 浏览输出文件 |
-| `logs` | `log` | Read a log tail | 读取日志末尾 |
+| [help](#help-h) | `h` | Browse command help | 查看帮助与指令大全 |
+| [doctor](#doctor-dr) | `dr` | Check the active environment | 检查运行环境 |
+| [status](#status-st) | `st` | Inspect a result | 查看任务状态和结果位置 |
+| [run](#run-batch) | `batch` | Run a batch configuration | 按配置文件批量运行 |
+| [conformers](#conformers-conf) | `conf` | Generate and rank 3D conformers | 从 SMILES 生成三维构象 |
+| [select](#select-sel) | `sel` | Select one SDF record | 从 SDF 中选取一个构象或姿势 |
+| [repair](#repair-rep) | `rep` | Repair missing receptor atoms | 修复受体缺失原子 |
+| [dock](#dock-d) | `d` | Run AutoDock-GPU docking | 运行 AutoDock-GPU 对接 |
+| [md](#md-sim) | `sim` | Run MD and GBSA analysis | 运行分子动力学与 GBSA 分析 |
+| [convert](#convert-conv) | `conv` | Convert a trajectory to PDB | 将轨迹转换为多模型 PDB |
+| [hdock](#hdock-hd) | `hd` | Run local HDOCK docking | 运行本地 HDOCK 对接 |
+| [runs](#runs-ls) | `ls` | List saved jobs | 浏览已保存任务 |
+| [path](#path-p) | `p` | Print a job or artifact path | 获取任务或结果路径 |
+| [files](#files-f) | `f` | List output files | 浏览输出文件 |
+| [logs](#logs-log) | `log` | Read a log tail | 读取日志末尾 |
 
 ## English
 
 ### help (h)
 
 Browse command help. Choose a command or print the full reference.
+
+```bash
+molforge help
+molforge help md
+molforge help --all
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -46,15 +54,14 @@ Browse command help. Choose a command or print the full reference.
 | `topic` | optional / 可选 | Command or alias to look up; omit for the overview; `help`, `doctor`, `status`, `run`, `conformers`, `select`, `repair`, `dock`, `md`, `convert`, `hdock`, `runs`, `path`, `files`, `logs` |
 | `--all` | optional / 可选 | Show every command with all options and examples |
 
-```bash
-molforge help
-molforge help md
-molforge help --all
-```
-
 ### doctor (dr)
 
 Check the active environment. Check required software before submitting calculations.
+
+```bash
+molforge doctor --stage conformers
+molforge doctor --stage md --accelerator gpu
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -65,14 +72,14 @@ Check the active environment. Check required software before submitting calculat
 | `--autodock` | optional / 可选 | AutoDock-GPU executable name or absolute path (default: autodock_gpu_128wi) |
 | `--autogrid` | optional / 可选 | AutoGrid4 executable name or absolute path (default: autogrid4) |
 
-```bash
-molforge doctor --stage conformers
-molforge doctor --stage md --accelerator gpu
-```
-
 ### status (st)
 
 Inspect a result. Accepts latest, a job ID, a unique name fragment, or a job directory. Running is a recorded state, not a process liveness check.
+
+```bash
+molforge status latest
+molforge st latest --json
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -82,14 +89,14 @@ Inspect a result. Accepts latest, a job ID, a unique name fragment, or a job dir
 | `job` | optional / 可选 | latest, job ID, unique name fragment, or an existing job directory |
 | `--json` | optional / 可选 | Output machine-readable JSON (default: off; add flag to enable) |
 
-```bash
-molforge status latest
-molforge st latest --json
-```
-
 ### runs (ls)
 
 List saved jobs. Show immediate job directories, newest first. Use --stage or --status to filter.
+
+```bash
+molforge runs
+molforge ls --stage conf --status completed
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -101,14 +108,15 @@ List saved jobs. Show immediate job directories, newest first. Use --stage or --
 | `--stage` | optional / 可选 | Only show this calculation stage (aliases accepted) (default: not specified); `conformers`, `select`, `dock`, `repair`, `md`, `convert`, `hdock` |
 | `--status` | optional / 可选 | Only show this recorded state (default: not specified); `completed`, `failed`, `interrupted`, `running`, `unknown` |
 
-```bash
-molforge runs
-molforge ls --stage conf --status completed
-```
-
 ### path (p)
 
 Print a job or artifact path. Prints only a path, suitable for cd or shell variables. Multiple artifact matches require explicit selection.
+
+```bash
+molforge path latest
+cd "$(molforge p latest)"
+molforge p latest --artifact sdf
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -118,15 +126,14 @@ Print a job or artifact path. Prints only a path, suitable for cd or shell varia
 | `job` | optional / 可选 | latest, job ID, unique name fragment, or an existing job directory |
 | `--artifact` | optional / 可选 | Artifact key: job, outputs, sdf, ranking, protocol, poses, energy, trajectory (default: job); `job`, `outputs`, `sdf`, `ranking`, `protocol`, `poses`, `energy`, `trajectory` |
 
-```bash
-molforge path latest
-cd "$(molforge p latest)"
-molforge p latest --artifact sdf
-```
-
 ### files (f)
 
 List output files. Lists outputs and logs relative to the selected job, including nested docking results.
+
+```bash
+molforge files latest
+molforge f latest --pattern '*.sdf'
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -137,14 +144,13 @@ List output files. Lists outputs and logs relative to the selected job, includin
 | `--json` | optional / 可选 | Output machine-readable JSON (default: off; add flag to enable) |
 | `--pattern` | optional / 可选 | Match relative file paths with a glob, e.g. *.sdf (default: *) |
 
-```bash
-molforge files latest
-molforge f latest --pattern '*.sdf'
-```
-
 ### logs (log)
 
 Read a log tail. Select a relative log path when several logs exist. Reads the last N lines without loading the whole log.
+
+```bash
+molforge logs latest --file unigbsa_pipeline.log --lines 50
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -155,13 +161,14 @@ Read a log tail. Select a relative log path when several logs exist. Reads the l
 | `--file` | optional / 可选 | Relative log file within the job; omit only when exactly one exists (default: not specified) |
 | `--lines` | optional / 可选 | Number of trailing lines, positive integer (default: 50) |
 
-```bash
-molforge logs latest --file unigbsa_pipeline.log --lines 50
-```
-
 ### run (batch)
 
 Run a batch configuration. Run JSON argument arrays sequentially, stopping at the first error. All input files must already exist.
+
+```bash
+molforge run --config examples/conformers.json --dry-run
+molforge run --config examples/conformers.json
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -170,14 +177,14 @@ Run a batch configuration. Run JSON argument arrays sequentially, stopping at th
 | `--config` | required / 必填 | JSON batch configuration file |
 | `--dry-run` | optional / 可选 | Validate syntax and input existence without computing (default: off; add flag to enable) |
 
-```bash
-molforge run --config examples/conformers.json --dry-run
-molforge run --config examples/conformers.json
-```
-
 ### conformers (conf)
 
 Generate and rank 3D conformers. Read one SMILES string or file. Writes outputs/conformers.sdf and conformer_ranking.csv.
+
+```bash
+molforge conformers --smiles 'CCO' --num-confs 10 --threads 2
+molforge conformers --smiles-file ./SMILES.txt --sampling-scheme 'High torsion' --sampling-rounds 2
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -196,14 +203,13 @@ Generate and rank 3D conformers. Read one SMILES string or file. Writes outputs/
 | `--embedding-attempts` | optional / 可选 | Positive embedding attempt budget (default: 100) |
 | `--sampling-scheme` | optional / 可选 | Standard sampling or random-coordinate High torsion sampling (default: Standard); `Standard`, `High torsion` |
 
-```bash
-molforge conformers --smiles 'CCO' --num-confs 10 --threads 2
-molforge conformers --smiles-file ./SMILES.txt --sampling-scheme 'High torsion' --sampling-rounds 2
-```
-
 ### select (sel)
 
 Select one SDF record. Record numbers start at 1. Writes outputs/selected_ligand.sdf with the original coordinates.
+
+```bash
+molforge select --sdf ./ensemble.sdf --record 1
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -214,13 +220,14 @@ Select one SDF record. Record numbers start at 1. Writes outputs/selected_ligand
 | `--sdf` | required / 必填 | SDF containing conformers or poses |
 | `--record` | required / 必填 | One-based file record number, not the conf_id property |
 
-```bash
-molforge select --sdf ./ensemble.sdf --record 1
-```
-
 ### dock (d)
 
 Run AutoDock-GPU docking. Requires receptor PDB, one ligand SDF record and a box. Choose either center coordinates or site residues.
+
+```bash
+molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --center 10 20 30 --size 22.5 22.5 22.5
+molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --site-residues A:195,A:203-206 --size 22.5 22.5 22.5 --rigid-macrocycle
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -244,14 +251,13 @@ Run AutoDock-GPU docking. Requires receptor PDB, one ligand SDF record and a box
 | `--autodock` | optional / 可选 | AutoDock-GPU executable name or absolute path (default: autodock_gpu_128wi) |
 | `--autogrid` | optional / 可选 | AutoGrid4 executable name or absolute path (default: autogrid4) |
 
-```bash
-molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --center 10 20 30 --size 22.5 22.5 22.5
-molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --site-residues A:195,A:203-206 --size 22.5 22.5 22.5 --rigid-macrocycle
-```
-
 ### repair (rep)
 
 Repair missing receptor atoms. Add missing atoms and pH 7 hydrogens. Missing residues and loops are not rebuilt. Review the repair report.
+
+```bash
+molforge repair --receptor ./receptor.pdb
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -261,13 +267,14 @@ Repair missing receptor atoms. Add missing atoms and pH 7 hydrogens. Missing res
 | `--job-name` | optional / 可选 | Readable task name; empty means automatic naming (default: automatic) |
 | `-r, --receptor` | required / 必填 | Receptor PDB file |
 
-```bash
-molforge repair --receptor ./receptor.pdb
-```
-
 ### md (sim)
 
 Run MD and GBSA analysis. Provide a reviewed receptor and ligand pose in the same coordinate system. Produces per-frame and average energy CSVs.
+
+```bash
+molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator cpu --threads 4
+molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator gpu --nvt-steps 250000 --npt-steps 250000 --steps 5000000
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -289,14 +296,13 @@ Run MD and GBSA analysis. Provide a reviewed receptor and ligand pose in the sam
 | `--npt-steps` | optional / 可选 | Positive number of NPT equilibration steps (default: 250000) |
 | `--accelerator` | optional / 可选 | auto: inherit environment; cpu: hide CUDA; gpu: require CUDA build and visible NVIDIA GPU (default: auto); `auto`, `gpu`, `cpu` |
 
-```bash
-molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator cpu --threads 4
-molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator gpu --nvt-steps 250000 --npt-steps 250000 --steps 5000000
-```
-
 ### convert (conv)
 
 Convert a trajectory to PDB. Topology and trajectory must match. Writes outputs/trajectory_animation.pdb, excluding common water and ion residues.
+
+```bash
+molforge convert --topology ./md.tpr --trajectory ./md.xtc
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -307,13 +313,13 @@ Convert a trajectory to PDB. Topology and trajectory must match. Writes outputs/
 | `--topology` | required / 必填 | Matching TPR, PDB or GRO topology |
 | `--trajectory` | required / 必填 | XTC or TRR trajectory |
 
-```bash
-molforge convert --topology ./md.tpr --trajectory ./md.xtc
-```
-
 ### hdock (hd)
 
 Run local HDOCK docking. Requires suitable receptor and peptide PDB inputs plus local HDOCKlite executables.
+
+```bash
+molforge hdock --receptor ./receptor.pdb --ligand ./peptide.pdb --models 100
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -327,16 +333,18 @@ Run local HDOCK docking. Requires suitable receptor and peptide PDB inputs plus 
 | `--createpl` | optional / 可选 | HDOCK createpl executable name or absolute path (default: createpl) |
 | `--models` | optional / 可选 | Positive number of HDOCK models to export (default: 100) |
 
-```bash
-molforge hdock --receptor ./receptor.pdb --ligand ./peptide.pdb --models 100
-```
-
 
 ## 中文
 
 ### help (h)
 
 查看帮助与指令大全. 无需准备输入文件或安装计算引擎。
+
+```bash
+molforge help
+molforge help md
+molforge help --all
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -345,15 +353,14 @@ molforge hdock --receptor ./receptor.pdb --ligand ./peptide.pdb --models 100
 | `topic` | optional / 可选 | 要查询的命令名称；省略时显示命令列表; `help`, `doctor`, `status`, `run`, `conformers`, `select`, `repair`, `dock`, `md`, `convert`, `hdock`, `runs`, `path`, `files`, `logs` |
 | `--all` | optional / 可选 | 显示所有命令的完整参数和示例 |
 
-```bash
-molforge help
-molforge help md
-molforge help --all
-```
-
 ### doctor (dr)
 
 检查运行环境. 在计算前检查所选阶段需要的软件。检查通过后再提交正式任务。
+
+```bash
+molforge doctor --stage conformers
+molforge doctor --stage md --accelerator gpu
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -364,14 +371,14 @@ molforge help --all
 | `--autodock` | optional / 可选 | AutoDock-GPU 可执行文件名或绝对路径（默认：autodock_gpu_128wi） |
 | `--autogrid` | optional / 可选 | AutoGrid4 可执行文件名或绝对路径（默认：autogrid4） |
 
-```bash
-molforge doctor --stage conformers
-molforge doctor --stage md --accelerator gpu
-```
-
 ### status (st)
 
 查看任务状态和结果位置. 支持 latest、任务 ID、唯一名称片段或完整任务目录。记录的 running 不代表进程仍存活。
+
+```bash
+molforge status latest
+molforge st latest --json
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -381,14 +388,14 @@ molforge doctor --stage md --accelerator gpu
 | `job` | optional / 可选 | latest、任务 ID、唯一名称片段或已有任务目录 |
 | `--json` | optional / 可选 | 输出机器可读的 JSON（默认：关闭；添加此开关以启用） |
 
-```bash
-molforge status latest
-molforge st latest --json
-```
-
 ### runs (ls)
 
 浏览已保存任务. 按时间倒序列出任务，可按阶段和状态筛选。
+
+```bash
+molforge runs
+molforge ls --stage conf --status completed
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -400,14 +407,15 @@ molforge st latest --json
 | `--stage` | optional / 可选 | 仅显示此计算阶段，支持命令简称（默认：不指定）; `conformers`, `select`, `dock`, `repair`, `md`, `convert`, `hdock` |
 | `--status` | optional / 可选 | 仅显示此记录状态（默认：不指定）; `completed`, `failed`, `interrupted`, `running`, `unknown` |
 
-```bash
-molforge runs
-molforge ls --stage conf --status completed
-```
-
 ### path (p)
 
 获取任务或结果路径. 只打印路径，方便 cd 和 Shell 变量使用。多个匹配结果时要求明确选择。
+
+```bash
+molforge path latest
+cd "$(molforge p latest)"
+molforge p latest --artifact sdf
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -417,15 +425,14 @@ molforge ls --stage conf --status completed
 | `job` | optional / 可选 | latest、任务 ID、唯一名称片段或已有任务目录 |
 | `--artifact` | optional / 可选 | 结果类别：job、outputs、sdf、ranking、protocol、poses、energy、trajectory（默认：job）; `job`, `outputs`, `sdf`, `ranking`, `protocol`, `poses`, `energy`, `trajectory` |
 
-```bash
-molforge path latest
-cd "$(molforge p latest)"
-molforge p latest --artifact sdf
-```
-
 ### files (f)
 
 浏览输出文件. 列出输出和日志的相对路径，包括嵌套的对接结果。
+
+```bash
+molforge files latest
+molforge f latest --pattern '*.sdf'
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -436,14 +443,13 @@ molforge p latest --artifact sdf
 | `--json` | optional / 可选 | 输出机器可读的 JSON（默认：关闭；添加此开关以启用） |
 | `--pattern` | optional / 可选 | 按相对路径通配符筛选，如 *.sdf（默认：*） |
 
-```bash
-molforge files latest
-molforge f latest --pattern '*.sdf'
-```
-
 ### logs (log)
 
 读取日志末尾. 有多个日志时需指定相对路径。只读取最后 N 行。
+
+```bash
+molforge logs latest --file unigbsa_pipeline.log --lines 50
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -454,13 +460,14 @@ molforge f latest --pattern '*.sdf'
 | `--file` | optional / 可选 | 任务内的日志相对路径，仅有一个日志时可省略（默认：不指定） |
 | `--lines` | optional / 可选 | 读取日志最后多少行，正整数（默认：50） |
 
-```bash
-molforge logs latest --file unigbsa_pipeline.log --lines 50
-```
-
 ### run (batch)
 
 按配置文件批量运行. 按顺序运行 JSON 中的命令，遇到失败即停止。所有输入文件须事先准备好。
+
+```bash
+molforge run --config examples/conformers.json --dry-run
+molforge run --config examples/conformers.json
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -469,14 +476,14 @@ molforge logs latest --file unigbsa_pipeline.log --lines 50
 | `--config` | required / 必填 | JSON 批处理配置文件路径（必填） |
 | `--dry-run` | optional / 可选 | 仅检查配置格式、命令语法和输入是否存在，不执行计算（默认：关闭；添加此开关以启用） |
 
-```bash
-molforge run --config examples/conformers.json --dry-run
-molforge run --config examples/conformers.json
-```
-
 ### conformers (conf)
 
 从 SMILES 生成三维构象. 对构象进行优化和排序。SMILES 可直接输入，也可从单行文本文件读取。结果保存在 outputs/conformers.sdf 和 outputs/conformer_ranking.csv。
+
+```bash
+molforge conformers --smiles 'CCO' --num-confs 10 --threads 2
+molforge conformers --smiles-file ./SMILES.txt --sampling-scheme 'High torsion' --sampling-rounds 2
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -495,14 +502,13 @@ molforge run --config examples/conformers.json
 | `--embedding-attempts` | optional / 可选 | 每轮三维嵌入的尝试预算，正整数（默认：100） |
 | `--sampling-scheme` | optional / 可选 | Standard 为常规采样；High torsion 每轮均使用随机坐标，适合高柔性分子（默认：Standard）; `Standard`, `High torsion` |
 
-```bash
-molforge conformers --smiles 'CCO' --num-confs 10 --threads 2
-molforge conformers --smiles-file ./SMILES.txt --sampling-scheme 'High torsion' --sampling-rounds 2
-```
-
 ### select (sel)
 
 从 SDF 中选取一个构象或姿势. 按文件中的记录序号选取，序号从 1 开始。输出 outputs/selected_ligand.sdf。
+
+```bash
+molforge select --sdf ./ensemble.sdf --record 1
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -513,13 +519,14 @@ molforge conformers --smiles-file ./SMILES.txt --sampling-scheme 'High torsion' 
 | `--sdf` | required / 必填 | 包含多个构象或姿势的 SDF 文件（必填） |
 | `--record` | required / 必填 | 要选取的文件记录序号，从 1 开始；不是 conf_id（必填） |
 
-```bash
-molforge select --sdf ./ensemble.sdf --record 1
-```
-
 ### dock (d)
 
 运行 AutoDock-GPU 对接. 需要受体 PDB、一个已选取的配体 SDF 记录以及结合位点。中心坐标与位点残基二选一；盒子尺寸必填。
+
+```bash
+molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --center 10 20 30 --size 22.5 22.5 22.5
+molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --site-residues A:195,A:203-206 --size 22.5 22.5 22.5 --rigid-macrocycle
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -543,14 +550,13 @@ molforge select --sdf ./ensemble.sdf --record 1
 | `--autodock` | optional / 可选 | AutoDock-GPU 可执行文件名或绝对路径（默认：autodock_gpu_128wi） |
 | `--autogrid` | optional / 可选 | AutoGrid4 可执行文件名或绝对路径（默认：autogrid4） |
 
-```bash
-molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --center 10 20 30 --size 22.5 22.5 22.5
-molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --site-residues A:195,A:203-206 --size 22.5 22.5 22.5 --rigid-macrocycle
-```
-
 ### repair (rep)
 
 修复受体缺失原子. 输入受体 PDB，补齐缺失原子并加入 pH 7 氢。不会重建缺失的残基或环区。使用结果前请检查修复报告。
+
+```bash
+molforge repair --receptor ./receptor.pdb
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -560,13 +566,14 @@ molforge dock --receptor ./receptor.pdb --ligand ./ligand.sdf --site-residues A:
 | `--job-name` | optional / 可选 | 任务名称；留空时按计算类型自动命名（默认：自动命名） |
 | `-r, --receptor` | required / 必填 | 受体 PDB 文件路径（必填） |
 
-```bash
-molforge repair --receptor ./receptor.pdb
-```
-
 ### md (sim)
 
 运行分子动力学与 GBSA 分析. 使用受体和已审阅的配体姿势，两者须在同一坐标系。结果包含逐帧能量与平均能量 CSV。
+
+```bash
+molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator cpu --threads 4
+molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator gpu --nvt-steps 250000 --npt-steps 250000 --steps 5000000
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -588,14 +595,13 @@ molforge repair --receptor ./receptor.pdb
 | `--npt-steps` | optional / 可选 | NPT 平衡步数，正整数（默认：250000） |
 | `--accelerator` | optional / 可选 | auto 沿用环境；cpu 隐藏 CUDA 设备；gpu 要求 CUDA 构建和可见 NVIDIA GPU（默认：auto）; `auto`, `gpu`, `cpu` |
 
-```bash
-molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator cpu --threads 4
-molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator gpu --nvt-steps 250000 --npt-steps 250000 --steps 5000000
-```
-
 ### convert (conv)
 
 将轨迹转换为多模型 PDB. 需要原子数和顺序匹配的拓扑与轨迹。输出 outputs/trajectory_animation.pdb，去除常见水和离子残基。
+
+```bash
+molforge convert --topology ./md.tpr --trajectory ./md.xtc
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -606,13 +612,13 @@ molforge md --receptor ./receptor.pdb --ligand ./reviewed_pose.sdf --accelerator
 | `--topology` | required / 必填 | 与轨迹匹配的 TPR、PDB 或 GRO 文件（必填） |
 | `--trajectory` | required / 必填 | XTC 或 TRR 轨迹文件（必填） |
 
-```bash
-molforge convert --topology ./md.tpr --trajectory ./md.xtc
-```
-
 ### hdock (hd)
 
 运行本地 HDOCK 对接. 需要受体 PDB、适合宏分子对接的配体 PDB，以及本地 HDOCKlite。输出排名后的复合物 PDB。
+
+```bash
+molforge hdock --receptor ./receptor.pdb --ligand ./peptide.pdb --models 100
+```
 
 | Option / 参数 | Requirement / 要求 | Description / 说明 |
 |---|---|---|
@@ -625,7 +631,3 @@ molforge convert --topology ./md.tpr --trajectory ./md.xtc
 | `--hdock` | optional / 可选 | 本地 HDOCK 可执行文件名或绝对路径（默认：hdock） |
 | `--createpl` | optional / 可选 | HDOCK createpl 可执行文件名或绝对路径（默认：createpl） |
 | `--models` | optional / 可选 | 要导出的 HDOCK 模型数，正整数（默认：100） |
-
-```bash
-molforge hdock --receptor ./receptor.pdb --ligand ./peptide.pdb --models 100
-```
