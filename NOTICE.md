@@ -8,7 +8,8 @@ This repository is distributed under the MIT License included in the repository'
 LICENSE file. The copyright and permission notice in that file applies to MolForge
 Linux source code owned by the project author.
 
-RDKit, Meeko, GROMACS, Uni-GBSA, OpenMM, PDBFixer, AutoDock-GPU, AutoGrid and HDOCK
-are separate dependencies with their own licenses and citation requirements. No
-third-party executables, force-field databases, model weights, or research ligands
-are included in the source release.
+RDKit, Meeko, gemmi, Open Babel, GROMACS, Uni-GBSA, OpenMM, PDBFixer,
+AutoDock-GPU, AutoGrid and HDOCK are separate projects with their own licenses and
+citation requirements. No third-party executables, libraries, force-field databases,
+model weights, or research ligands are included in the source release. See
+docs/CITATIONS.md for the projects' requested citations and upstream sources.

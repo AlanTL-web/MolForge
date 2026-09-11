@@ -8,8 +8,8 @@ root = Path(__file__).resolve().parents[1]
 version = re.search(r'^version = "([0-9.]+)"', (root / 'pyproject.toml').read_text(), re.M).group(1)
 target = root.parent / f'MolForge_Linux_{version}.tar.gz'
 excluded = {'__pycache__', '.pytest_cache', '.venv', 'build', 'dist', 'runs'}
-public_files = {'README.md', 'CONTRIBUTING.md', 'NOTICE.md', 'pyproject.toml',
-                'SOURCE_PROVENANCE.json', '.gitignore', '.gitattributes', 'MANIFEST.in'}
+public_files = {'README.md', 'CONTRIBUTING.md', 'NOTICE.md', 'LICENSE', 'pyproject.toml',
+                'SOURCE_PROVENANCE.json', 'CITATION.cff', '.gitignore', '.gitattributes', 'MANIFEST.in'}
 public_dirs = {'src', 'tests', 'docs', 'examples', '.github'}
 public_scripts = {'install.sh', 'slurm-md.sh', 'package_release.py', 'build_command_reference.py',
                   'validate_conformer_smoke.py', 'smoke_cli.sh'}

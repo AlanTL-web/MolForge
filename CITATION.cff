@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use MolForge in published work, cite this software and the scientific packages used by your workflow. See docs/CITATIONS.md."
+type: software
+title: "MolForge"
+version: 1.1.0
+date-released: 2026-09-10
+authors:
+  - name: "AlanTL-web"
+repository-code: "https://github.com/AlanTL-web/MolForge"
+url: "https://github.com/AlanTL-web/MolForge"
+license: MIT

@@ -1,6 +1,6 @@
 # User manual / 用户手册
 
-[Home / 首页](../README.md) · [Complete command reference / 指令大全](COMMANDS.md)
+[Home / 首页](../README.md) · [Complete command reference / 指令大全](COMMANDS.md) · [Citations / 引用](CITATIONS.md)
 
 This manual combines installation, everyday commands, result navigation, batch jobs,
 Slurm, troubleshooting and validation notes. The command reference contains every
@@ -8,14 +8,21 @@ option in both English and Chinese.
 
 ## Install
 
-Unpack the source release and enter its directory. Create a Linux environment:
+Clone the GitHub repository and create a Linux environment:
 
 ```bash
+git clone https://github.com/AlanTL-web/MolForge.git
+cd MolForge
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install '.[conformers]'
+python -m pip install --upgrade pip
+python -m pip install ".[conformers]"
 molforge doctor --stage conformers
 ```
+
+If Git is unavailable, download the source archive from GitHub, unpack it, enter the
+unpacked directory, and start at `python3 -m venv .venv`. Do not run installation
+commands from a parent directory because `.[conformers]` refers to the current checkout.
 
 On subsequent logins, activate the same environment. If Ubuntu lacks venv, install
 `python3-venv`. An alternative used in native WSL validation is Ubuntu's
@@ -259,9 +266,12 @@ long docking steps. `logs` prints a snapshot; use `tail -f` on the real path to 
 [指令大全的中文部分](COMMANDS.md#中文)。
 
 ```bash
+git clone https://github.com/AlanTL-web/MolForge.git
+cd MolForge
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install '.[conformers]'
+python -m pip install --upgrade pip
+python -m pip install ".[conformers]"
 export MOLFORGE_LANG=zh
 export MOLFORGE_RUNS_DIR="$HOME/molforge-runs"
 molforge conf --help
@@ -295,3 +305,6 @@ cd "$(molforge p latest)"
 冒烟测试只验证软件流程，少量构象和短时间 MD 不代表科学收敛。缺少引擎时运行对应的
 `doctor` 检查。失败后保留目录和日志；本版不自动断点续跑。详尽科学默认值和所有命令示例
 均保存在同一份[双语指令大全](COMMANDS.md)。
+
+发表使用本流程所得结果时，请按[引用指南](CITATIONS.md)记录实际软件版本，并引用此次
+运行真正使用的科学软件。MolForge 不会自动安装或打包外部对接与分子动力学引擎。

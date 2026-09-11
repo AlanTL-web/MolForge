@@ -1,4 +1,4 @@
-include README.md CONTRIBUTING.md NOTICE.md SOURCE_PROVENANCE.json
+include README.md CONTRIBUTING.md NOTICE.md CITATION.cff SOURCE_PROVENANCE.json
 include .gitignore .gitattributes
 recursive-include docs *.md
 recursive-include examples *.json

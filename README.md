@@ -3,16 +3,20 @@
 A command-line workflow for molecular conformer generation, receptor repair,
 docking, molecular dynamics, GBSA analysis, and result browsing.
 
-**[User manual / 用户手册](docs/MANUAL.md)** · **[All commands / 指令大全](docs/COMMANDS.md)**
+**[User manual / 用户手册](docs/MANUAL.md)** · **[All commands / 指令大全](docs/COMMANDS.md)** · **[Citations / 引用](docs/CITATIONS.md)**
 
 ## Quick start
 
-Requires Linux and Python 3.10 or newer. From the downloaded source directory:
+Requires Linux and Python 3.10 or newer. Clone the GitHub repository, create an
+isolated environment, and install the conformer-generation dependencies:
 
 ```bash
+git clone https://github.com/AlanTL-web/MolForge.git
+cd MolForge
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install '.[conformers]'
+python -m pip install --upgrade pip
+python -m pip install ".[conformers]"
 molforge doctor --stage conformers
 molforge conf --smiles 'CCO' -n 10 -t 2 --job-name ethanol
 molforge ls
@@ -66,4 +70,5 @@ performance claim. Full GPU docking and long MD require target-environment valid
 Source, public documentation, tests, synthetic examples and CI are included.
 Research structures, local results, virtual environments and machine settings are
 excluded. See [CONTRIBUTING.md](CONTRIBUTING.md) for development and upload preparation,
-and [NOTICE.md](NOTICE.md) for provenance and license status.
+[NOTICE.md](NOTICE.md) for provenance and license status, and the
+[citation guide](docs/CITATIONS.md) when publishing results produced with MolForge.
