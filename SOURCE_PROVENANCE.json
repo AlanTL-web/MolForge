@@ -1,0 +1,59 @@
+[
+  {
+    "source": "packages\\cyclic_peptide_workflow\\job.py",
+    "destination": "src\\molforge_core\\job.py",
+    "source_sha256": "caf577b22b57dc56a96a4295126d76cbad9dd68484770d9718e67ab46fb03bf9"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\solvent.py",
+    "destination": "src\\molforge_core\\solvent.py",
+    "source_sha256": "8f9e1c78967252e63a389dcd0fdb104591abd587cf83334487e220e25d629d69"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\autodock_gpu.py",
+    "destination": "src\\molforge_core\\autodock_gpu.py",
+    "source_sha256": "94c20db23d2f60373e82d25f90f3ae20a9cace17f6a97a9642dfa5a8125bee68"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\pdbfixer_repair.py",
+    "destination": "src\\molforge_core\\pdbfixer_repair.py",
+    "source_sha256": "9bfc8ef49741eb05c79fb9245f249d270156938758116c6d984bffe1f1de7350"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\unigbsa_runner.py",
+    "destination": "src\\molforge_core\\unigbsa_runner.py",
+    "source_sha256": "8aebee80d3963d93b0a265c950a86ab765d6d6a3ad5f3e311f22c8c9c5a3d07c"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\hotspot.py",
+    "destination": "src\\molforge_core\\hotspot.py",
+    "source_sha256": "b6db0e057304a7e69442d6b273e04dd339d51701390edc3e4c45d66e6356802b"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\hdock.py",
+    "destination": "src\\molforge_core\\hdock.py",
+    "source_sha256": "b230b65e06c323bee2312ee6ee23405213ad295e7eb5466fab7e35e3d7c095f5"
+  },
+  {
+    "source": "packages\\conf_gen\\conf_gen\\src\\conf_gen\\core.py",
+    "destination": "src\\molforge_conf\\core.py",
+    "source_sha256": "50a62d9d66afc044653ab6ec54863927c3bfd6122eb14f35d37907284a8576bc"
+  },
+  {
+    "source": "packages\\conf_gen\\conf_gen\\src\\conf_gen\\sampling.py",
+    "destination": "src\\molforge_conf\\sampling.py",
+    "source_sha256": "3833f2f7ac22055dc022327c0800cda31e8bd88c40662ac1d07f8e3faa246642"
+  },
+  {
+    "source": "packages\\cyclic_peptide_workflow\\md.py",
+    "source_sha256": "0eb7de34c8a683ca22e268a365d608a7440fc4e9ed2382bec176ac90d33a424e",
+    "destination": "src/molforge_core/md_config.py",
+    "extracted_symbols": [
+      "UniGBSAMDParameters",
+      "locate_trajectory_outputs",
+      "missing_standard_residue_heavy_atoms",
+      "write_binding_energy_average",
+      "write_unigbsa_pipeline_config"
+    ]
+  }
+]

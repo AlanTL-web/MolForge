@@ -1,0 +1,5 @@
+{
+  "commands": [
+    ["conformers", "--smiles", "CCO", "--num-confs", "5", "--seed", "2026", "--job-name", "ethanol-smoke", "--output-root", "runs"]
+  ]
+}

@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molforge-linux"
+version = "1.1.0"
+description = "Independent native Linux CLI for the MolForge molecular workflow"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.optional-dependencies]
+conformers = ["rdkit"]
+dock = ["rdkit", "meeko", "gemmi"]
+test = ["pytest", "rdkit", "build"]
+
+[project.scripts]
+molforge = "molforge_linux.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]

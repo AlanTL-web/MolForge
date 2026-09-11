@@ -1,0 +1,9 @@
+include README.md CONTRIBUTING.md NOTICE.md SOURCE_PROVENANCE.json
+include .gitignore .gitattributes
+recursive-include docs *.md
+recursive-include examples *.json
+recursive-include .github *.yml *.md
+include scripts/install.sh scripts/slurm-md.sh scripts/smoke_cli.sh
+include scripts/package_release.py scripts/build_command_reference.py
+include scripts/validate_conformer_smoke.py
+global-exclude *.pyc
