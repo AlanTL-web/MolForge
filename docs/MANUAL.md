@@ -8,6 +8,50 @@ option in both English and Chinese.
 
 ## Install
 
+### Automatic environment setup
+
+After cloning and entering this repository, run:
+
+```bash
+bash scripts/install.sh --help
+bash scripts/install.sh --profile all --plan
+bash scripts/install.sh --profile all --yes
+```
+
+Profiles: `conformers` installs RDKit; `dock` adds Meeko, gemmi, AutoGrid and an
+official AutoDock-GPU v1.6 binary; `repair` installs PDBFixer/OpenMM; `md` installs
+GROMACS, AmberTools, ACPYPE, gmx_MMPBSA, Open Babel, MPI, Uni-GBSA and lickit.
+`all` combines these and checks for separately installed HDOCKlite.
+
+Use `--prefix /path/to/conda/environment` to reuse an existing environment. Otherwise,
+the active Conda environment is selected, or `.molforge/envs/PROFILE` is created.
+Checks run before installation; a working environment needs no downloads. Existing
+Conda packages are resolved by the package manager; dependency resolution may update
+packages. Choose a new prefix to preserve a carefully tuned environment. A venv can
+be checked, but the installer refuses to convert it to a Conda environment.
+
+The installer finds micromamba, mamba or conda on PATH, or downloads micromamba from
+its official distribution service. Packages come from conda-forge and Bioconda.
+No administrator privileges are used. Follow the printed activation command, or use
+the printed `run -p ...` command if your shell has not initialized Conda/Mamba.
+
+```bash
+bash scripts/install.sh --profile md --prefix /data/envs/molforge --check
+bash scripts/install.sh --profile dock --adgpu cuda12 --yes
+```
+
+AutoDock-GPU is reused from PATH when present. Automatic backend selection uses the
+NVIDIA driver's reported CUDA compatibility, otherwise OpenCL. `--adgpu cuda11`,
+`cuda12`, or `ocl` overrides selection; `skip` disables its download. Downloads use
+HTTPS; a recorded SHA-256 is provenance, not comparison against an upstream checksum.
+CUDA/OpenCL drivers are not installed. GROMACS package selection does not guarantee a
+CUDA build: use `molforge doctor --stage md --accelerator gpu` on your compute node.
+HDOCK is checked but not downloaded; place the authors' `hdock` and `createpl`
+executables on PATH. Any failed final check returns a nonzero exit code. Inspect it
+before running calculations. `--check` and `--plan` never install anything.
+
+### Minimal Python installation
+
 Clone the GitHub repository and create a Linux environment:
 
 ```bash

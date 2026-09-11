@@ -7,6 +7,24 @@ docking, molecular dynamics, GBSA analysis, and result browsing.
 
 ## Quick start
 
+For automatic environment setup, including external scientific engines, use:
+
+```bash
+git clone https://github.com/AlanTL-web/MolForge.git
+cd MolForge
+bash scripts/install.sh --profile all --plan
+bash scripts/install.sh --profile all --yes
+```
+
+Setup reuses the active Conda environment or creates `.molforge/envs/all`, installs
+missing packages, downloads AutoDock-GPU when absent, and prints activation commands.
+Choose `--profile conformers`, `dock`, `repair`, or `md` for a smaller installation.
+HDOCKlite must be obtained separately; missing components cause the final checks to
+fail visibly. GPU drivers and OpenCL device runtimes are supplied by the host system.
+See [environment setup](docs/MANUAL.md#automatic-environment-setup) for reuse and checks.
+
+### Minimal Python installation
+
 Requires Linux and Python 3.10 or newer. Clone the GitHub repository, create an
 isolated environment, and install the conformer-generation dependencies:
 
